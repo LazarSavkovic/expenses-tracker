@@ -29,11 +29,7 @@ with app.app_context():
 # GET /expenses - Get all expenses, with optional filter by category
 @app.route('/expenses', methods=['GET'])
 def get_expenses():
-    category_filter = request.args.get('filter')
-    if category_filter:
-        expenses = Expense.query.filter_by(category=category_filter).all()
-    else:
-        expenses = Expense.query.all()
+    expenses = Expense.query.all()
 
     return jsonify([expense.to_dict() for expense in expenses])
 
@@ -69,12 +65,6 @@ def update_expense(id):
     return jsonify(expense.to_dict())
 
 # DELETE /expenses/<id> - Delete an expense
-@app.route('/expenses/<int:id>', methods=['DELETE'])
-def delete_expense(id):
-    expense = Expense.query.get_or_404(id)
-    db.session.delete(expense)
-    db.session.commit()
-    return jsonify({'message': 'Expense deleted successfully'}), 204
 
 # Run the app
 if __name__ == '__main__':
